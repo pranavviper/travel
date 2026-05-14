@@ -9,6 +9,7 @@ import axios from 'axios';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { toast } from 'react-hot-toast';
+import API_URL from '../config/api';
 
 // Fix for default marker icons in Leaflet
 import markerIcon from 'leaflet/dist/images/marker-icon.png';
@@ -326,7 +327,7 @@ const RoutePlanner = () => {
                           return;
                         }
                         try {
-                          await axios.post('http://localhost:5001/api/trips', {
+                          await axios.post(`${API_URL}/api/trips`, {
                             title: `Route: ${startPoint.label} to ${endPoint.label}`,
                             userId: user._id,
                             status: 'planned',

@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import { Search, MapPin, Calendar, TrendingUp, Star, ArrowRight } from 'lucide-react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import API_URL from '../config/api';
 
 const Dashboard = () => {
   const [stats, setStats] = useState({ trips: 0, places: 0, users: 0, points: 0 });
@@ -16,13 +17,13 @@ const Dashboard = () => {
     const fetchData = async () => {
       setIsLoading(true);
       try {
-        const statsRes = await axios.get('http://localhost:5001/api/stats', { 
+        const statsRes = await axios.get(`${API_URL}/api/stats`, { 
           params: { userId: user?._id },
           timeout: 5000 
         });
         setStats(statsRes.data);
         
-        const placesRes = await axios.get('http://localhost:5001/api/places', { 
+        const placesRes = await axios.get(`${API_URL}/api/places`, { 
           params: { interests: Array.isArray(user?.interests) ? user.interests.join(',') : user?.interests },
           timeout: 5000 
         });

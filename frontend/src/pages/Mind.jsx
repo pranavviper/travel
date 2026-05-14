@@ -4,6 +4,7 @@ import { Brain, Send, Sparkles, Map, Calendar, Users, AlertCircle } from 'lucide
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-hot-toast';
+import API_URL from '../config/api';
 
 const Mind = () => {
   const [query, setQuery] = useState('');
@@ -22,7 +23,7 @@ const Mind = () => {
     }
 
     try {
-      await axios.post('http://localhost:5001/api/trips', { ...plan, userId: user._id });
+      await axios.post(`${API_URL}/api/trips`, { ...plan, userId: user._id });
       toast.success("Trip saved to your profile!");
     } catch (err) {
       toast.error("Failed to save trip.");
@@ -37,7 +38,7 @@ const Mind = () => {
     
     try {
       const response = await axios.post(
-        'http://localhost:5001/api/ai/generate',
+        `${API_URL}/api/ai/generate`,
         { query, userId: user?._id }
       );
 

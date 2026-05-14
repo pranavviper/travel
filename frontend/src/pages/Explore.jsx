@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { MapPin, Star, Search, X, ChevronDown } from 'lucide-react';
 import axios from 'axios';
 import PlaceDetailModal from '../components/PlaceDetailModal';
+import API_URL from '../config/api';
 
 const DISTRICTS = [
   'All Districts', 'Chennai', 'Chengalpattu', 'Kanchipuram', 'Tiruvallur', 'Ranipet',
@@ -36,7 +37,7 @@ const Explore = () => {
     const fetchPlaces = async () => {
       setIsLoading(true);
       try {
-        const res = await axios.get(`http://localhost:5001/api/places?hidden=${showHidden}`, { timeout: 5000 });
+        const res = await axios.get(`${API_URL}/api/places?hidden=${showHidden}`, { timeout: 5000 });
         setPlaces(res.data);
       } catch (err) {
         console.error("Failed to fetch places:", err);

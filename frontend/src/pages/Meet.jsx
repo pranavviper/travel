@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { UserPlus, MessageCircle, Heart, MapPin } from 'lucide-react';
 import axios from 'axios';
+import API_URL from '../config/api';
 
 const Meet = () => {
   const [travelers, setTravelers] = useState([]);
@@ -11,7 +12,7 @@ const Meet = () => {
     const fetchTravelers = async () => {
       setIsLoading(true);
       try {
-        const res = await axios.get('http://localhost:5001/api/users', { timeout: 1000 });
+        const res = await axios.get(`${API_URL}/api/users`, { timeout: 1000 });
         setTravelers(res.data);
       } catch (err) {
         console.error("Failed to fetch travelers:", err);

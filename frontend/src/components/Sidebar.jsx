@@ -3,6 +3,7 @@ import { LayoutDashboard, Compass, Users, Brain, Settings, LogOut, Plane, Naviga
 import { NavLink, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import axios from 'axios';
+import API_URL from '../config/api';
 
 const Sidebar = () => {
   const navigate = useNavigate();
@@ -37,7 +38,7 @@ const Sidebar = () => {
 
   const handleUpdate = async () => {
     try {
-      const res = await axios.put(`http://localhost:5001/api/users/${user._id}`, editData);
+      const res = await axios.put(`${API_URL}/api/users/${user._id}`, editData);
       localStorage.setItem('user', JSON.stringify(res.data));
       setUser(res.data);
       setIsEditing(false);

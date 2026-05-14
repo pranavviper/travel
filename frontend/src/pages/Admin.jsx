@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Plus, Trash2, Edit3, MapPin, Search, Eye, EyeOff, LayoutGrid, Users } from 'lucide-react';
 import axios from 'axios';
+import API_URL from '../config/api';
 
 const Admin = () => {
   const [places, setPlaces] = useState([]);
@@ -23,8 +24,8 @@ const Admin = () => {
 
   const fetchData = async () => {
     try {
-      const placesRes = await axios.get('http://localhost:5001/api/places?all=true');
-      const usersRes = await axios.get('http://localhost:5001/api/users');
+      const placesRes = await axios.get(`${API_URL}/api/places?all=true`);
+      const usersRes = await axios.get(`${API_URL}/api/users`);
       setPlaces(placesRes.data);
       setUsers(usersRes.data);
     } catch (err) {
@@ -35,7 +36,7 @@ const Admin = () => {
   const handleAddPlace = async (e) => {
     e.preventDefault();
     try {
-      await axios.post('http://localhost:5001/api/places', newPlace);
+      await axios.post(`${API_URL}/api/places`, newPlace);
       setNewPlace({ name: '', location: '', image: '', category: 'Cultural', price: '$$', description: '', isHidden: false });
       fetchData();
     } catch (err) {
@@ -45,7 +46,7 @@ const Admin = () => {
 
   const handleDeletePlace = async (id) => {
     if (window.confirm("Delete this place?")) {
-      await axios.delete(`http://localhost:5001/api/places/${id}`);
+      await axios.delete(`${API_URL}/api/places/${id}`);
       fetchData();
     }
   };

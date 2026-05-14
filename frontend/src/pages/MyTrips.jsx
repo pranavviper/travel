@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Calendar, MapPin, Trash2, ChevronRight, Compass, Sparkles, Plus, Car, Bike, Train, Plane, FileText, X } from 'lucide-react';
 import axios from 'axios';
+import API_URL from '../config/api';
 import { MapContainer, TileLayer, Marker, Polyline, useMap } from 'react-leaflet';
 import L from 'leaflet';
 import markerIcon from 'leaflet/dist/images/marker-icon.png';
@@ -81,7 +82,7 @@ const MyTrips = () => {
     const fetchNearby = async () => {
       setIsLoadingNearby(true);
       try {
-        const res = await axios.get('http://localhost:5001/api/places?all=true', { timeout: 5000 });
+        const res = await axios.get(`${API_URL}/api/places?all=true`, { timeout: 5000 });
         const destinations = selectedTrip.places.map(p => p.toLowerCase());
         const matched = res.data.filter(p => {
           const loc = (p.location || '').toLowerCase();
@@ -101,7 +102,7 @@ const MyTrips = () => {
   const fetchTrips = async () => {
     setIsLoading(true);
     try {
-      const res = await axios.get('http://localhost:5001/api/trips', { 
+      const res = await axios.get(`${API_URL}/api/trips`, { 
         params: { userId: user?._id },
         timeout: 5000 
       });
@@ -120,7 +121,7 @@ const MyTrips = () => {
   const deleteTrip = async (id) => {
     if (window.confirm("Remove this trip from your archive?")) {
       try {
-        await axios.delete(`http://localhost:5001/api/trips/${id}`);
+        await axios.delete(`${API_URL}/api/trips/${id}`);
       } catch(e) {}
       setTrips(trips.filter(t => t._id !== id));
     }
@@ -211,7 +212,7 @@ const MyTrips = () => {
       try {
         // Build a search query from place names (match any destination district)
         const placeNames = newTrip.places.map(p => p.name).join(',');
-        const res = await axios.get(`http://localhost:5001/api/places?all=true`, { timeout: 5000 });
+        const res = await axios.get(`${API_URL}/api/places?all=true`, { timeout: 5000 });
         // Filter client-side: match any place whose location contains one of the trip destinations
         const destinations = newTrip.places.map(p => p.name.toLowerCase());
         const matched = res.data.filter(p => {
@@ -232,7 +233,7 @@ const MyTrips = () => {
   const fetchSuggestions = async (placesArr) => {
     setIsFetchingSuggestions(true);
     try {
-      const res = await axios.post('http://localhost:5001/api/ai/suggestions', { places: placesArr });
+      const res = await axios.post(`${API_URL}/api/ai/suggestions`, { places: placesArr });
       setAiSuggestions(res.data);
     } catch (err) {
       setAiSuggestions([
@@ -257,7 +258,7 @@ const MyTrips = () => {
     
     let savedTrip;
     try {
-      const res = await axios.post('http://localhost:5001/api/trips', tripData);
+      const res = await axios.post(`${API_URL}/api/trips`, tripData);
       savedTrip = res.data;
       setTrips([savedTrip, ...trips]);
     } catch (err) {

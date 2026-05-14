@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Mail, Lock, User, MapPin, ArrowRight, Sparkles, Phone } from 'lucide-react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import API_URL from '../config/api';
 
 const Auth = () => {
   const [isLogin, setIsLogin] = useState(true);
@@ -25,7 +26,7 @@ const Auth = () => {
 
     try {
       const endpoint = isLogin ? '/login' : '/register';
-      const res = await axios.post(`http://localhost:5001/api/auth${endpoint}`, formData);
+      const res = await axios.post(`${API_URL}/api/auth${endpoint}`, formData);
       localStorage.setItem('user', JSON.stringify(res.data));
       
       if (res.data.role === 'admin' || res.data.role === 'superadmin') {

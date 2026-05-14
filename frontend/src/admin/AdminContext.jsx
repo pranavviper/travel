@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import axios from 'axios';
+import API_URL from '../config/api';
 
 const AdminContext = createContext(null);
 
@@ -10,7 +11,7 @@ export const AdminProvider = ({ children }) => {
   const [adminToken, setAdminToken] = useState(() => localStorage.getItem('adminToken'));
 
   const login = async (email, password) => {
-    const res = await axios.post('http://localhost:5001/api/admin/auth/login', { email, password });
+    const res = await axios.post(`${API_URL}/api/admin/auth/login`, { email, password });
     localStorage.setItem('adminToken', res.data.token);
     localStorage.setItem('adminUser', JSON.stringify(res.data.user));
     setAdminToken(res.data.token);
@@ -25,7 +26,7 @@ export const AdminProvider = ({ children }) => {
     setAdminUser(null);
   };
 
-  const api = axios.create({ baseURL: 'http://localhost:5001/api/admin' });
+  const api = axios.create({ baseURL: `${API_URL}/api/admin` });
   api.interceptors.request.use(cfg => {
     if (adminToken) cfg.headers.Authorization = `Bearer ${adminToken}`;
     return cfg;
